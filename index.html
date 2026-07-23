@@ -444,9 +444,10 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 0;
-      padding: 44px 36px;
+      padding: 0;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
       transition: border-color .3s ease, transform .3s ease, opacity .4s ease;
     }
     .project-card:hover {
@@ -457,6 +458,30 @@
     }
     .project-card.is-fading {
       opacity: 0;
+    }
+    .project-image {
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+    .project-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(25%);
+      transition: transform .5s ease, filter .5s ease;
+    }
+    .project-card:hover .project-image img {
+      transform: scale(1.04);
+      filter: grayscale(0%);
+    }
+    .project-body {
+      padding: 44px 36px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
     }
     .project-top {
       display: flex;
@@ -926,35 +951,61 @@
           <button class="filter-tab" type="button" data-filter="seo">SEO</button>
         </div>
         <div class="projects-grid" data-projects>
-          <article class="project-card reveal" data-category="seo">
-            <div class="project-top">
-              <h3>Alartis Abogados</h3>
-              <span class="project-type">SEO</span>
+          <article class="project-card reveal" data-category="web">
+            <div class="project-image">
+              <img src="assets/project-katokanovitski.webp" alt="Captura de pantalla del sitio web de Katokanovitski" loading="lazy" decoding="async">
             </div>
-            <p>Auditoría SEO técnica completa para despacho de abogados especializado en propiedad intelectual en Madrid. Análisis de 33+ incidencias técnicas, investigación de palabras clave y plan de acción en 4 fases.</p>
-            <p class="project-tags">SEO · Auditoría técnica · Madrid</p>
-            <a class="project-link" href="#alartis">Ver caso →</a>
+            <div class="project-body">
+              <div class="project-top">
+                <h3>Katokanovitski</h3>
+                <span class="project-type">Web</span>
+              </div>
+              <p>Sitio web para fotógrafa profesional. Galería visual, diseño oscuro premium y experiencia de usuario enfocada en el portfolio fotográfico.</p>
+              <p class="project-tags">Desarrollo web · Fotografía · WordPress</p>
+              <a class="project-link" href="https://katokanovitski.com/" target="_blank" rel="noopener">Ver proyecto →</a>
+            </div>
           </article>
           <article class="project-card reveal" data-category="web" style="transition-delay:.1s">
-            <div class="project-top">
-              <h3>Norte Studio</h3>
-              <span class="project-type">Web</span>
+            <div class="project-image">
+              <img src="assets/project-sanchez-studio.webp" alt="Captura de pantalla del sitio web de Sanchez Studio" loading="lazy" decoding="async">
             </div>
-            <p>Sitio web para empresa de reformas y construcción. Diseño oscuro premium con galería de proyectos, formulario de contacto y optimización SEO on-page.</p>
-            <p class="project-tags">Desarrollo web · Reformas · HTML/CSS</p>
-            <a class="project-link" href="#norte-studio">Ver proyecto →</a>
-          </article>
-          <article class="project-card reveal" data-category="web">
-            <div class="project-top">
-              <h3>Studio Oeste</h3>
-              <span class="project-type">Web</span>
+            <div class="project-body">
+              <div class="project-top">
+                <h3>Sanchez Studio</h3>
+                <span class="project-type">Web</span>
+              </div>
+              <p>Sitio web para estudio boutique de reformas y diseño de interiores. Diseño editorial minimalista con tipografía serif, galería de proyectos y sistema de diseño completo.</p>
+              <p class="project-tags">Diseño web · Reformas · HTML/CSS</p>
+              <a class="project-link" href="https://trusman9017.github.io/sanchez-studio/" target="_blank" rel="noopener">Ver proyecto →</a>
             </div>
-            <p>Identidad digital para estudio de reformas de alta gama. Diseño minimalista, tipografía editorial y experiencia de usuario cuidada al detalle.</p>
-            <p class="project-tags">Diseño web · WordPress · Reformas</p>
-            <a class="project-link" href="#studio-oeste">Ver proyecto →</a>
           </article>
-          <article class="project-card is-soon reveal" data-category="web" style="transition-delay:.1s">
-            <span class="soon-label">Nuevo proyecto en proceso</span>
+          <article class="project-card reveal" data-category="seo">
+            <div class="project-image">
+              <img src="assets/project-alartis.webp" alt="Captura de pantalla del sitio web de Alartis Abogados" loading="lazy" decoding="async">
+            </div>
+            <div class="project-body">
+              <div class="project-top">
+                <h3>Alartis Abogados</h3>
+                <span class="project-type">SEO</span>
+              </div>
+              <p>Auditoría SEO técnica completa para despacho de abogados especializado en propiedad intelectual en Madrid. Análisis de 33+ incidencias técnicas y plan de acción en 4 fases.</p>
+              <p class="project-tags">SEO · Auditoría técnica · Madrid</p>
+              <a class="project-link" href="https://gray-worm-155792.hostingersite.com/" target="_blank" rel="noopener">Ver caso →</a>
+            </div>
+          </article>
+          <article class="project-card reveal" data-category="web" style="transition-delay:.1s">
+            <div class="project-image">
+              <img src="assets/project-norte-estudio.webp" alt="Captura de pantalla del sitio web de Norte Estudio" loading="lazy" decoding="async">
+            </div>
+            <div class="project-body">
+              <div class="project-top">
+                <h3>Norte Estudio</h3>
+                <span class="project-type">Web</span>
+              </div>
+              <p>Sitio web para empresa de reformas integrales en Salamanca. Diseño oscuro premium con galería de proyectos, formulario de contacto y optimización SEO on-page.</p>
+              <p class="project-tags">Desarrollo web · Reformas · HTML/CSS</p>
+              <a class="project-link" href="https://trusman9017.github.io/norte-estudio/" target="_blank" rel="noopener">Ver proyecto →</a>
+            </div>
           </article>
         </div>
       </div>
