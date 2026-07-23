@@ -1,0 +1,1821 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Andrei Trusau — Desarrollo web y SEO en Salamanca</title>
+  <meta name="description" content="Diseño y desarrollo web + SEO para negocios que quieren crecer en Google. Andrei Trusau, desarrollador web freelance en Salamanca, España.">
+  <meta property="og:title" content="Andrei Trusau — Desarrollo web y SEO">
+  <meta property="og:description" content="Sitios web que se encuentran. Diseño, desarrollo y posicionamiento en Google para negocios y agencias en España.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="og-image.png">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #131313;
+      --surface: #111111;
+      --border: #1e1e1e;
+      --text: #eaeaea;
+      --text-dim: #8a8a8a;
+      --accent: #0047FF;
+      --accent-soft: rgba(0, 71, 255, 0.12);
+      --font-display: "Space Grotesk", sans-serif;
+      --font-body: "Inter", sans-serif;
+      --pad-section: 120px;
+      --container: 1200px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--accent); color: #fff; }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    .container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    section { padding: var(--pad-section) 0; }
+    section[id] { scroll-margin-top: 88px; }
+
+    /* ---------- Custom cursor ---------- */
+    .cursor {
+      position: fixed;
+      top: 0; left: 0;
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width .25s ease, height .25s ease, opacity .25s ease;
+      opacity: 0;
+      mix-blend-mode: difference;
+    }
+    .cursor.is-visible { opacity: 1; }
+    .cursor.is-hover { width: 42px; height: 42px; }
+    @media (hover: none), (pointer: coarse) {
+      .cursor { display: none; }
+    }
+    @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+      * { cursor: none; }
+    }
+
+    /* ---------- Nav ---------- */
+    .site-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      transition: background .35s ease, backdrop-filter .35s ease, border-color .35s ease;
+      border-bottom: 1px solid transparent;
+    }
+    .site-nav.is-scrolled {
+      background: rgba(10, 10, 10, 0.72);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      border-bottom-color: var(--border);
+    }
+    .nav-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 22px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { display: block; }
+    .logo svg {
+      display: block;
+      height: 32px;
+      width: auto;
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-dim);
+      position: relative;
+      padding: 4px 0;
+      transition: color .25s ease;
+    }
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 100%; height: 1px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s ease;
+    }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--text); }
+    .nav-links a:hover::after, .nav-links a.is-active::after { transform: scaleX(1); }
+
+    .menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      width: 40px; height: 40px;
+      position: relative;
+      z-index: 102;
+    }
+    .menu-btn span, .menu-btn span::before, .menu-btn span::after {
+      content: "";
+      position: absolute;
+      left: 8px;
+      width: 24px; height: 2px;
+      background: var(--text);
+      transition: transform .3s ease, opacity .3s ease, top .3s ease;
+    }
+    .menu-btn span { top: 19px; }
+    .menu-btn span::before { left: 0; top: -7px; }
+    .menu-btn span::after { left: 0; top: 7px; }
+    .menu-btn[aria-expanded="true"] span { background: transparent; }
+    .menu-btn[aria-expanded="true"] span::before { top: 0; transform: rotate(45deg); }
+    .menu-btn[aria-expanded="true"] span::after { top: 0; transform: rotate(-45deg); }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    #heroCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(19, 19, 19, 0.6);
+      z-index: 1;
+    }
+    .hero .container { position: relative; z-index: 2; }
+    .hero-foot { z-index: 2; }
+    .hero-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(40px, 8.2vw, 100px);
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+    }
+    .hero-title .accent { color: var(--accent); }
+    .hero-title .word {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: bottom;
+    }
+    .hero-title .word > span {
+      display: inline-block;
+      transform: translateY(110%);
+      animation: word-up .8s cubic-bezier(.22,.9,.3,1) forwards;
+      animation-delay: var(--d, 0s);
+    }
+    @keyframes word-up {
+      to { transform: translateY(0); }
+    }
+    .hero-sub {
+      margin-top: 32px;
+      max-width: 520px;
+      color: var(--text-dim);
+      font-size: 18px;
+      font-weight: 300;
+      opacity: 0;
+      animation: fade-up .8s ease forwards;
+      animation-delay: .7s;
+    }
+    .hero-ctas {
+      margin-top: 44px;
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fade-up .8s ease forwards;
+      animation-delay: .9s;
+    }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .btn { display: inline-flex; align-items: center; justify-content: center; }
+    .btn-fill {
+      background: #0047FF;
+      color: #fff;
+      border: none;
+      border-radius: 0;
+      padding: 16px 36px;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-fill:hover { opacity: 0.85; }
+    .btn-ghost {
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 0;
+      padding: 16px 36px;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .btn-ghost:hover { border-color: #fff; }
+    .hero-steps {
+      display: flex;
+      gap: 32px;
+      margin-top: 40px;
+      position: relative;
+      z-index: 2;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fade-up .8s ease forwards;
+      animation-delay: 1s;
+    }
+    .hero-step {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      color: rgba(255, 255, 255, 0.25);
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      transition: all 0.5s ease;
+    }
+    .step-num { font-weight: 700; }
+    .hero-step.active { color: rgba(255, 255, 255, 0.9); }
+    .hero-step.active .step-num { color: #0047FF; }
+
+    .hero-foot {
+      position: absolute;
+      left: 0; right: 0;
+      bottom: 36px;
+      opacity: 0;
+      animation: fade-up .8s ease forwards;
+      animation-delay: 1.1s;
+    }
+    .hero-foot-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 20px 32px 0;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #3ddc84;
+      animation: blink 1.6s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.25; }
+    }
+
+    /* ---------- Marquee ---------- */
+    .marquee {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 40s linear infinite;
+    }
+    .marquee-track span {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      white-space: nowrap;
+    }
+    @keyframes marquee {
+      to { transform: translateX(-50%); }
+    }
+
+    /* ---------- Reveal on scroll ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.is-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---------- Section headers ---------- */
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(32px, 4.5vw, 48px);
+      letter-spacing: -0.01em;
+      margin-bottom: 56px;
+    }
+
+    /* ---------- Servicios ---------- */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .service-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0;
+      padding: 40px 32px;
+      transition: border-color .3s ease, transform .3s ease;
+    }
+    .service-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+    .service-icon {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 24px;
+      display: block;
+    }
+    .service-card h3 {
+      font-family: var(--font-display);
+      font-size: 21px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .service-card p {
+      color: var(--text-dim);
+      font-size: 15px;
+      font-weight: 300;
+    }
+    .services-note {
+      margin-top: 36px;
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+    .services-note::before {
+      content: "→ ";
+      color: var(--accent);
+    }
+
+    /* ---------- Proyectos ---------- */
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 40px;
+    }
+    .filter-tab {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 14px;
+      padding: 9px 22px;
+      border-radius: 0;
+      transition: color .25s ease, border-color .25s ease, background .25s ease;
+    }
+    .filter-tab:hover { color: var(--text); }
+    .filter-tab.is-active {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0;
+      padding: 44px 36px;
+      display: flex;
+      flex-direction: column;
+      transition: border-color .3s ease, transform .3s ease, opacity .4s ease;
+    }
+    .project-card:hover {
+      border-color: var(--accent);
+    }
+    .project-card.is-hidden {
+      display: none;
+    }
+    .project-card.is-fading {
+      opacity: 0;
+    }
+    .project-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .project-card h3 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 600;
+    }
+    .project-type {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+    .project-card p {
+      color: var(--text-dim);
+      font-size: 15px;
+      font-weight: 300;
+      flex-grow: 1;
+    }
+    .project-tags {
+      margin: 24px 0;
+      font-size: 13px;
+      color: var(--text-dim);
+      letter-spacing: 0.02em;
+    }
+    .project-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      align-self: flex-start;
+      position: relative;
+      padding-bottom: 3px;
+      transition: color .25s ease;
+    }
+    .project-link::after {
+      content: "";
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 100%; height: 1px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s ease;
+    }
+    .project-link:hover { color: var(--accent); }
+    .project-link:hover::after { transform: scaleX(1); }
+    .project-card.is-soon {
+      opacity: 0.45;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 260px;
+      border-style: dashed;
+    }
+    .project-card.is-soon:hover { transform: none; border-color: var(--border); }
+    .project-card.is-soon .soon-label {
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--text-dim);
+    }
+
+    /* ---------- Proceso ---------- */
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .process-step {
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+      transition: border-color .3s ease;
+    }
+    .process-step:hover { border-top-color: var(--accent); }
+    .process-num {
+      font-family: var(--font-display);
+      font-size: 14px;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 14px;
+    }
+    .process-step h3 {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .process-step p {
+      color: var(--text-dim);
+      font-size: 14px;
+      font-weight: 300;
+    }
+
+    /* ---------- Sobre mí ---------- */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .about-photo {
+      aspect-ratio: 3 / 4;
+      border-radius: 0;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(1);
+    }
+    .about-photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      mix-blend-mode: multiply;
+      opacity: 0;
+      transition: opacity .4s ease;
+      pointer-events: none;
+    }
+    .about-photo:hover::after { opacity: 0.35; }
+    .about-text p {
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--text);
+      margin-bottom: 28px;
+    }
+    .skills-table {
+      margin-bottom: 28px;
+    }
+    .skills-table > div {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 16px;
+      padding: 13px 0;
+      border-top: 1px solid var(--border);
+    }
+    .skills-table > div:last-child { border-bottom: 1px solid var(--border); }
+    .skills-table dt {
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .skills-table dd {
+      font-size: 14px;
+      color: var(--text);
+      margin: 0;
+    }
+    .about-remote {
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+
+    /* ---------- Contacto ---------- */
+    .contact { text-align: center; }
+    .contact .section-title { margin-bottom: 16px; }
+    .contact-sub {
+      color: var(--text-dim);
+      font-weight: 300;
+      margin-bottom: 56px;
+    }
+    .contact-options {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0;
+      padding: 32px 48px;
+      min-width: 280px;
+      transition: border-color .3s ease, transform .3s ease;
+      position: relative;
+      display: block;
+    }
+    .contact-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+    .contact-card .label {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      display: block;
+      margin-bottom: 10px;
+    }
+    .contact-card .value {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .copy-tip {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translate(-50%, 6px);
+      background: var(--accent);
+      color: #0a0a0a;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s ease, transform .3s ease;
+    }
+    .copy-tip.is-shown {
+      opacity: 1;
+      transform: translate(-50%, -6px);
+    }
+    .contact-more {
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+    .contact-more a {
+      color: var(--text);
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 2px;
+      transition: color .25s ease;
+    }
+    .contact-more a:hover { color: var(--accent); }
+
+    /* ---------- Footer ---------- */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 96px 0 40px;
+    }
+    .footer-cta {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 72px;
+      margin-bottom: 44px;
+    }
+    .footer-kicker {
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+    }
+    .footer-mail {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(30px, 5.5vw, 68px);
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+      color: var(--text);
+      transition: color .25s ease;
+      word-break: break-all;
+    }
+    .footer-mail:hover { color: var(--accent); }
+    .footer-path {
+      font-family: Consolas, Menlo, monospace;
+      font-size: 13px;
+      color: #555;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+    .footer-path .fp-accent { color: var(--accent); }
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .footer-row p { font-size: 14px; color: var(--text-dim); }
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .footer-links a {
+      font-size: 14px;
+      color: var(--text-dim);
+      transition: color .25s ease;
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-fine {
+      font-size: 12px;
+      color: #555;
+      text-align: center;
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 1024px) {
+      :root { --pad-section: 96px; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .process-grid { grid-template-columns: 1fr 1fr; row-gap: 48px; }
+    }
+
+    @media (max-width: 768px) {
+      :root { --pad-section: 72px; }
+      .container { padding: 0 20px; }
+      .nav-inner { padding: 18px 20px; }
+      .menu-btn { display: block; }
+      .nav-links {
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 10, 10, 0.97);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .35s ease;
+        z-index: 101;
+      }
+      .nav-links.is-open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .nav-links a { font-size: 24px; font-family: var(--font-display); }
+      .services-grid,
+      .projects-grid,
+      .process-grid { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .about-photo { max-width: 340px; }
+      .hero-sub { font-size: 16px; }
+      .hero-foot-inner { padding: 16px 20px 0; }
+      .contact-card { padding: 26px 32px; min-width: 0; width: 100%; }
+      .contact-options { flex-direction: column; align-items: stretch; }
+      #heroCanvas, .hero-overlay, .hero-steps { display: none; }
+      .footer-mail { word-break: break-word; }
+    }
+
+    /* ---------- Reduced motion ---------- */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .hero-title .word > span { transform: none; }
+      .hero-sub, .hero-ctas, .hero-steps, .hero-foot { opacity: 1; }
+      .reveal { opacity: 1; transform: none; }
+      .cursor { display: none; }
+    }
+
+    /* ---------- Focus states ---------- */
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" aria-hidden="true"></div>
+
+  <nav class="site-nav" data-nav>
+    <div class="nav-inner">
+      <a class="logo" href="#inicio" aria-label="TRUsauWEB — Inicio">
+        <svg viewBox="0 0 240 56" role="img" aria-hidden="true" focusable="false">
+          <text x="0" y="40" font-family="'Space Grotesk', sans-serif" font-size="36" font-weight="700" fill="#ffffff">TRU</text>
+          <rect x="76" y="8" width="72" height="40" fill="#0047FF"/>
+          <text x="112" y="40" font-family="'Space Grotesk', sans-serif" font-size="36" font-weight="500" fill="#ffffff" text-anchor="middle">sau</text>
+          <text x="154" y="40" font-family="'Space Grotesk', sans-serif" font-size="36" font-weight="700" fill="#ffffff">WEB</text>
+        </svg>
+      </a>
+      <button class="menu-btn" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-menu" data-menu-btn><span></span></button>
+      <ul class="nav-links" id="nav-menu" data-nav-links>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#proyectos">Proyectos</a></li>
+        <li><a href="#sobre-mi">Sobre mí</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="inicio">
+
+    <!-- HERO -->
+    <section class="hero">
+      <canvas id="heroCanvas" aria-hidden="true"></canvas>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="container">
+        <h1 class="hero-title" data-hero-title>
+          <span class="line">Sitios web que</span>
+          <br>
+          <span class="line accent">se encuentran.</span>
+        </h1>
+        <p class="hero-sub">Diseño y desarrollo web + SEO para negocios que quieren crecer en Google.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-fill" href="#proyectos"><span class="btn-label">Ver proyectos</span></a>
+          <a class="btn btn-ghost" href="#contacto"><span class="btn-label">Hablemos</span></a>
+        </div>
+        <div class="hero-steps">
+          <div class="hero-step active" data-step="0"><span class="step-num">01</span><span class="step-label">Semántica</span></div>
+          <div class="hero-step" data-step="1"><span class="step-num">02</span><span class="step-label">Estructura</span></div>
+          <div class="hero-step" data-step="2"><span class="step-num">03</span><span class="step-label">Diseño</span></div>
+          <div class="hero-step" data-step="3"><span class="step-num">04</span><span class="step-label">Posicionamiento</span></div>
+        </div>
+      </div>
+      <div class="hero-foot">
+        <div class="hero-foot-inner">
+          <span class="dot" aria-hidden="true"></span>
+          <span>Salamanca, España · Disponible para proyectos</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Diseño web — SEO técnico — WordPress — Semántica — Estructura — Auditoría — Crecimiento — HTML / CSS — Posicionamiento — Salamanca — Google Search Console — Contenidos — Velocidad web — Analítica — Make.com — Estrategia —&nbsp;</span><span>Diseño web — SEO técnico — WordPress — Semántica — Estructura — Auditoría — Crecimiento — HTML / CSS — Posicionamiento — Salamanca — Google Search Console — Contenidos — Velocidad web — Analítica — Make.com — Estrategia —&nbsp;</span>
+      </div>
+    </div>
+
+    <!-- SERVICIOS -->
+    <section id="servicios">
+      <div class="container">
+        <p class="section-label reveal">01 — Servicios</p>
+        <h2 class="section-title reveal">Lo que hago</h2>
+        <div class="services-grid">
+          <article class="service-card reveal">
+            <span class="service-icon" aria-hidden="true">01</span>
+            <h3>Auditoría y estrategia</h3>
+            <p>Antes de diseñar, analizo tu negocio, tus competidores y lo que buscan tus clientes. La estructura se define con datos, no con plantillas.</p>
+          </article>
+          <article class="service-card reveal" style="transition-delay:.1s">
+            <span class="service-icon" aria-hidden="true">02</span>
+            <h3>Diseño y desarrollo</h3>
+            <p>Sitios web a medida con código limpio. HTML/CSS/JS o WordPress según el proyecto. Rápidos, responsive y listos para posicionar.</p>
+          </article>
+          <article class="service-card reveal" style="transition-delay:.2s">
+            <span class="service-icon" aria-hidden="true">03</span>
+            <h3>SEO y crecimiento</h3>
+            <p>Auditorías técnicas, investigación de palabras clave, estructura de contenidos y seguimiento de resultados. Visibilidad real en Google.</p>
+          </article>
+        </div>
+        <p class="services-note reveal"><a href="https://trusman9017.github.io/Trusau-portfolio" target="_blank" style="color:inherit; text-decoration:none;">También ofrezco servicios de <span style="color:#0047FF">estrategia de marca y contenidos</span>. Ver portfolio completo →</a></p>
+      </div>
+    </section>
+
+    <!-- PROYECTOS -->
+    <section id="proyectos">
+      <div class="container">
+        <p class="section-label reveal">02 — Proyectos</p>
+        <h2 class="section-title reveal">Trabajo reciente</h2>
+        <div class="filter-tabs reveal" role="tablist" aria-label="Filtrar proyectos">
+          <button class="filter-tab is-active" type="button" data-filter="todo">Todo</button>
+          <button class="filter-tab" type="button" data-filter="web">Web</button>
+          <button class="filter-tab" type="button" data-filter="seo">SEO</button>
+        </div>
+        <div class="projects-grid" data-projects>
+          <article class="project-card reveal" data-category="seo">
+            <div class="project-top">
+              <h3>Alartis Abogados</h3>
+              <span class="project-type">SEO</span>
+            </div>
+            <p>Auditoría SEO técnica completa para despacho de abogados especializado en propiedad intelectual en Madrid. Análisis de 33+ incidencias técnicas, investigación de palabras clave y plan de acción en 4 fases.</p>
+            <p class="project-tags">SEO · Auditoría técnica · Madrid</p>
+            <a class="project-link" href="#alartis">Ver caso →</a>
+          </article>
+          <article class="project-card reveal" data-category="web" style="transition-delay:.1s">
+            <div class="project-top">
+              <h3>Norte Studio</h3>
+              <span class="project-type">Web</span>
+            </div>
+            <p>Sitio web para empresa de reformas y construcción. Diseño oscuro premium con galería de proyectos, formulario de contacto y optimización SEO on-page.</p>
+            <p class="project-tags">Desarrollo web · Reformas · HTML/CSS</p>
+            <a class="project-link" href="#norte-studio">Ver proyecto →</a>
+          </article>
+          <article class="project-card reveal" data-category="web">
+            <div class="project-top">
+              <h3>Studio Oeste</h3>
+              <span class="project-type">Web</span>
+            </div>
+            <p>Identidad digital para estudio de reformas de alta gama. Diseño minimalista, tipografía editorial y experiencia de usuario cuidada al detalle.</p>
+            <p class="project-tags">Diseño web · WordPress · Reformas</p>
+            <a class="project-link" href="#studio-oeste">Ver proyecto →</a>
+          </article>
+          <article class="project-card is-soon reveal" data-category="web" style="transition-delay:.1s">
+            <span class="soon-label">Nuevo proyecto en proceso</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESO -->
+    <section id="proceso">
+      <div class="container">
+        <p class="section-label reveal">03 — Proceso</p>
+        <h2 class="section-title reveal">Cómo trabajo</h2>
+        <div class="process-grid">
+          <article class="process-step reveal">
+            <span class="process-num">01</span>
+            <h3>Análisis</h3>
+            <p>Entiendo tu negocio, tus competidores y tus objetivos antes de escribir una línea de código.</p>
+          </article>
+          <article class="process-step reveal" style="transition-delay:.1s">
+            <span class="process-num">02</span>
+            <h3>Diseño</h3>
+            <p>Propongo una solución visual clara. Sin templates genéricos.</p>
+          </article>
+          <article class="process-step reveal" style="transition-delay:.2s">
+            <span class="process-num">03</span>
+            <h3>Desarrollo</h3>
+            <p>Código limpio y optimizado desde el primer día. Pruebas en todos los dispositivos.</p>
+          </article>
+          <article class="process-step reveal" style="transition-delay:.3s">
+            <span class="process-num">04</span>
+            <h3>Posicionamiento</h3>
+            <p>El sitio sale con base SEO sólida. Seguimiento posterior disponible.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOBRE MÍ -->
+    <section id="sobre-mi">
+      <div class="container">
+        <p class="section-label reveal">04 — Sobre mí</p>
+        <div class="about-grid">
+          <div class="about-photo reveal">
+            <img src="assets/andrei-trusau.webp" alt="Andrei Trusau" loading="lazy" decoding="async">
+          </div>
+          <div class="about-text reveal" style="transition-delay:.15s">
+            <p>Soy Andrei Trusau, diseñador y desarrollador web freelance con base en Salamanca. Trabajo con negocios locales y agencias en España para crear sitios web que no solo se ven bien — sino que aparecen en Google y convierten visitas en clientes. Combino desarrollo front-end, WordPress y estrategia SEO en un solo perfil.</p>
+            <dl class="skills-table">
+              <div><dt>Desarrollo</dt><dd>HTML / CSS / JavaScript / WordPress / Elementor</dd></div>
+              <div><dt>SEO</dt><dd>Técnico / On-page / Semántica / Search Console</dd></div>
+              <div><dt>Herramientas</dt><dd>GA4 / Figma</dd></div>
+              <div><dt>Ubicación</dt><dd>Salamanca / Trabajo remoto</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" class="contact">
+      <div class="container">
+        <p class="section-label reveal">05 — Contacto</p>
+        <h2 class="section-title reveal">¿Hablamos?</h2>
+        <p class="contact-sub reveal">Cuéntame tu proyecto. Respondo en menos de 24h.</p>
+        <div class="contact-options">
+          <button class="contact-card reveal" type="button" data-copy="trusauweb@gmail.com" aria-label="Copiar email trusauweb@gmail.com">
+            <span class="copy-tip" aria-hidden="true">Copiado ✓</span>
+            <span class="label">Email</span>
+            <span class="value">trusauweb@gmail.com</span>
+          </button>
+          <a class="contact-card reveal" style="transition-delay:.1s" href="#" target="_blank" rel="noopener">
+            <span class="label">WhatsApp</span>
+            <span class="value">Abrir chat</span>
+          </a>
+          <a class="contact-card reveal" style="transition-delay:.2s" href="https://t.me/Andrei7169" target="_blank" rel="noopener">
+            <span class="label">Telegram</span>
+            <span class="value">@Andrei7169</span>
+          </a>
+        </div>
+        <p class="contact-more reveal">O encuentra mi trabajo completo en → <a href="https://trusman9017.github.io/Trusau-portfolio" target="_blank" rel="noopener">GitHub</a></p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-cta">
+        <p class="footer-kicker reveal">¿Tienes un proyecto?</p>
+        <a class="footer-mail reveal" href="mailto:trusauweb@gmail.com">trusauweb@gmail.com</a>
+      </div>
+      <div class="footer-row">
+        <p>© 2026 Andrei Trusau</p>
+        <ul class="footer-links">
+          <li><a href="https://github.com/Trusman9017" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="#" aria-label="LinkedIn (próximamente)">LinkedIn</a></li>
+          <li><a href="https://t.me/Andrei7169" target="_blank" rel="noopener">Telegram</a></li>
+        </ul>
+      </div>
+      <p class="footer-path" aria-hidden="true"><span class="fp-accent">/</span>tru<span class="fp-accent">/</span>sau<span class="fp-accent">/</span>web</p>
+      <p class="footer-fine">Diseñado y desarrollado por Andrei Trusau · Salamanca, España</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      /* ---- Hero: word-by-word reveal ---- */
+      var heroTitle = document.querySelector("[data-hero-title]");
+      if (heroTitle && !reducedMotion) {
+        var delay = 0;
+        heroTitle.querySelectorAll(".line").forEach(function (line) {
+          var words = line.textContent.trim().split(/\s+/);
+          line.textContent = "";
+          words.forEach(function (word, i) {
+            var wrap = document.createElement("span");
+            wrap.className = "word";
+            var inner = document.createElement("span");
+            inner.textContent = word;
+            inner.style.setProperty("--d", delay + "s");
+            delay += 0.12;
+            wrap.appendChild(inner);
+            line.appendChild(wrap);
+            if (i < words.length - 1) line.appendChild(document.createTextNode(" "));
+          });
+        });
+      }
+
+      /* ---- Nav: background on scroll ---- */
+      var nav = document.querySelector("[data-nav]");
+      function onScrollNav() {
+        nav.classList.toggle("is-scrolled", window.scrollY > 30);
+      }
+      window.addEventListener("scroll", onScrollNav, { passive: true });
+      onScrollNav();
+
+      /* ---- Mobile menu ---- */
+      var menuBtn = document.querySelector("[data-menu-btn]");
+      var navLinks = document.querySelector("[data-nav-links]");
+      menuBtn.addEventListener("click", function () {
+        var open = navLinks.classList.toggle("is-open");
+        menuBtn.setAttribute("aria-expanded", String(open));
+        menuBtn.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+      });
+      navLinks.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", function () {
+          navLinks.classList.remove("is-open");
+          menuBtn.setAttribute("aria-expanded", "false");
+        });
+      });
+
+      /* ---- Reveal on scroll ---- */
+      var revealEls = document.querySelectorAll(".reveal");
+      if ("IntersectionObserver" in window && !reducedMotion) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-in");
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+        revealEls.forEach(function (el) { io.observe(el); });
+      } else {
+        revealEls.forEach(function (el) { el.classList.add("is-in"); });
+      }
+
+      /* ---- Active nav link on scroll ---- */
+      var sections = document.querySelectorAll("main section[id]");
+      var linkMap = {};
+      navLinks.querySelectorAll("a[href^='#']").forEach(function (link) {
+        linkMap[link.getAttribute("href").slice(1)] = link;
+      });
+      if ("IntersectionObserver" in window) {
+        var navIo = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            var link = linkMap[entry.target.id];
+            if (!link) return;
+            if (entry.isIntersecting) {
+              navLinks.querySelectorAll("a").forEach(function (a) { a.classList.remove("is-active"); });
+              link.classList.add("is-active");
+            }
+          });
+        }, { rootMargin: "-40% 0px -55% 0px" });
+        sections.forEach(function (s) { navIo.observe(s); });
+      }
+
+      /* ---- Project filters ---- */
+      var tabs = document.querySelectorAll(".filter-tab");
+      var cards = document.querySelectorAll("[data-projects] .project-card");
+      tabs.forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          tabs.forEach(function (t) { t.classList.remove("is-active"); });
+          tab.classList.add("is-active");
+          var filter = tab.getAttribute("data-filter");
+          cards.forEach(function (card) {
+            var match = filter === "todo" || card.getAttribute("data-category") === filter;
+            if (match) {
+              card.classList.remove("is-hidden");
+              card.classList.add("is-fading");
+              requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                  card.classList.remove("is-fading");
+                });
+              });
+            } else {
+              card.classList.add("is-hidden");
+            }
+          });
+        });
+      });
+
+      /* ---- Copy email ---- */
+      document.querySelectorAll("[data-copy]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var text = btn.getAttribute("data-copy");
+          function shown() {
+            var tip = btn.querySelector(".copy-tip");
+            tip.classList.add("is-shown");
+            setTimeout(function () { tip.classList.remove("is-shown"); }, 1800);
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(shown);
+          } else {
+            var ta = document.createElement("textarea");
+            ta.value = text;
+            ta.style.position = "fixed";
+            ta.style.opacity = "0";
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand("copy");
+            document.body.removeChild(ta);
+            shown();
+          }
+        });
+      });
+
+      /* ---- Custom cursor ---- */
+      var cursor = document.querySelector(".cursor");
+      var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+      if (cursor && finePointer && !reducedMotion) {
+        var cx = -100, cy = -100, tx = -100, ty = -100;
+        document.addEventListener("mousemove", function (e) {
+          tx = e.clientX;
+          ty = e.clientY;
+          cursor.classList.add("is-visible");
+        });
+        document.addEventListener("mouseleave", function () {
+          cursor.classList.remove("is-visible");
+        });
+        (function loop() {
+          cx += (tx - cx) * 0.22;
+          cy += (ty - cy) * 0.22;
+          cursor.style.transform = "translate(" + cx + "px," + cy + "px) translate(-50%,-50%)";
+          requestAnimationFrame(loop);
+        })();
+        document.querySelectorAll("a, button").forEach(function (el) {
+          el.addEventListener("mouseenter", function () { cursor.classList.add("is-hover"); });
+          el.addEventListener("mouseleave", function () { cursor.classList.remove("is-hover"); });
+        });
+      }
+    })();
+  </script>
+  <script>
+    (function () {
+      "use strict";
+
+      var canvas = document.getElementById("heroCanvas");
+      if (!canvas || !canvas.getContext) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      var ctx = canvas.getContext("2d");
+      var ACCENT = "#0047FF";
+      var TEXT = "rgba(255,255,255,0.7)";
+      var WHITE = "#ffffff";
+      var GRID = "rgba(255,255,255,0.18)";
+      var LOOP = 16; /* seconds: phases 0-15, fade 15-16 */
+
+      var W = 0, H = 0, DPR = 1;
+      function resize() {
+        DPR = Math.min(window.devicePixelRatio || 1, 2);
+        W = canvas.clientWidth;
+        H = canvas.clientHeight;
+        canvas.width = Math.round(W * DPR);
+        canvas.height = Math.round(H * DPR);
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      }
+      window.addEventListener("resize", resize);
+      resize();
+
+      /* ---- helpers ---- */
+      function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+      function seg(t, a, b) { return clamp01((t - a) / (b - a)); }
+      function lerp(a, b, p) { return a + (b - a) * p; }
+      function easeInQuad(p) { return p * p; }
+      function easeOutCubic(p) { var u = 1 - p; return 1 - u * u * u; }
+      function rr(x, y, w, h, r) {
+        r = Math.min(r, w / 2, h / 2);
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + h, r);
+        ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+        ctx.closePath();
+      }
+      function fs() { return Math.max(0.78, Math.min(1, W / 1100)); }
+      function fontUI(px, weight) {
+        return (weight || 400) + " " + Math.round(px * fs()) + "px Inter, sans-serif";
+      }
+      function fontDisplay(px, weight) {
+        return (weight || 500) + " " + Math.round(px * fs()) + 'px "Space Grotesk", sans-serif';
+      }
+
+      /* ---- data ---- */
+      var KWS = ["reformas piso Madrid", "presupuesto reforma cocina", "empresa reformas baratas", "reformas integrales", "reforma baño Madrid"];
+      var VOLS = ["1.9K", "880", "720", "1.3K", "590"];
+      var INTS = ["Comercial", "Transacc.", "Comercial", "Comercial", "Transacc."];
+
+      function flightStart(i) { return 3.2 + i * 0.45; }
+      var FLIGHT_DUR = 0.7;
+
+      function searchGeom() {
+        return { x: W * 0.05, y: H * 0.12, w: W * 0.35, h: 46 };
+      }
+      function tableGeom() {
+        var x = W * 0.60, y = H * 0.20, w = W * 0.35, h = H * 0.50;
+        return { x: x, y: y, w: w, h: h, rowH: h / 6, c1: w * 0.5, c2: w * 0.25 };
+      }
+      function kwListPos(i) {
+        var s = searchGeom();
+        return { x: s.x + 10, y: s.y + s.h + 28 + i * 32 };
+      }
+      function cellPos(i) {
+        var tb = tableGeom();
+        return { x: tb.x + 14, y: tb.y + tb.rowH * (i + 1.5) };
+      }
+      function flightPos(i, p) {
+        var a = kwListPos(i), b = cellPos(i);
+        var cpx = (a.x + b.x) / 2, cpy = Math.min(a.y, b.y) - 50;
+        var u = 1 - p;
+        return {
+          x: u * u * a.x + 2 * u * p * cpx + p * p * b.x,
+          y: u * u * a.y + 2 * u * p * cpy + p * p * b.y
+        };
+      }
+
+      /* ---- PHASE 1: search bar + keywords ---- */
+      function drawSearch(t) {
+        var a = 1 - seg(t, 5.4, 6.0);
+        if (a <= 0) return;
+        ctx.save();
+        ctx.globalAlpha *= a;
+        var s = searchGeom();
+        var my = s.y + s.h / 2;
+
+        ctx.strokeStyle = "rgba(255,255,255,0.25)";
+        ctx.lineWidth = 1.5;
+        ctx.fillStyle = "rgba(255,255,255,0.06)";
+        rr(s.x, s.y, s.w, s.h, 23);
+        ctx.fill();
+        ctx.stroke();
+
+        var mx = s.x + 22;
+        ctx.strokeStyle = TEXT;
+        ctx.beginPath(); ctx.arc(mx, my - 2, 6, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(mx + 4.5, my + 2.5); ctx.lineTo(mx + 9, my + 7); ctx.stroke();
+
+        var q = "reformas Madrid";
+        var n = Math.floor(seg(t, 0.2, 1.2) * q.length);
+        var typed = q.slice(0, n);
+        ctx.fillStyle = WHITE;
+        ctx.font = fontUI(15);
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "left";
+        ctx.fillText(typed, s.x + 40, my);
+        if (t < 1.5 && Math.floor(t * 3) % 2 === 0) {
+          ctx.fillRect(s.x + 42 + ctx.measureText(typed).width, my - 8, 1.5, 16);
+        }
+
+        for (var i = 0; i < 5; i++) {
+          var ap = seg(t, 1.2 + i * 0.4, 1.5 + i * 0.4);
+          if (ap <= 0 || t >= flightStart(i)) continue;
+          var p = kwListPos(i);
+          ctx.save();
+          ctx.globalAlpha *= ap;
+          ctx.fillStyle = ACCENT;
+          ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = TEXT;
+          ctx.font = fontUI(13);
+          ctx.fillText(KWS[i], p.x + 14, p.y);
+          ctx.restore();
+        }
+        ctx.restore();
+      }
+
+      /* ---- flying keywords with trail ---- */
+      function drawFlights(t) {
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "left";
+        for (var i = 0; i < 5; i++) {
+          var st = flightStart(i);
+          var p = seg(t, st, st + FLIGHT_DUR);
+          if (p <= 0 || p >= 1) continue;
+          var e = easeInQuad(p);
+          for (var g = 6; g >= 1; g--) {
+            var gp = e - g * 0.05;
+            if (gp <= 0) continue;
+            var gpos = flightPos(i, gp);
+            ctx.save();
+            ctx.globalAlpha *= 0.35 * (1 - g / 7);
+            ctx.fillStyle = ACCENT;
+            ctx.beginPath(); ctx.arc(gpos.x, gpos.y, 3, 0, Math.PI * 2); ctx.fill();
+            ctx.restore();
+          }
+          var pos = flightPos(i, e);
+          ctx.fillStyle = ACCENT;
+          ctx.beginPath(); ctx.arc(pos.x, pos.y, 4, 0, Math.PI * 2); ctx.fill();
+          ctx.save();
+          ctx.globalAlpha *= (1 - p * 0.3);
+          ctx.fillStyle = TEXT;
+          ctx.font = fontUI(13);
+          ctx.fillText(KWS[i], pos.x + 12, pos.y);
+          ctx.restore();
+        }
+      }
+
+      /* ---- PHASE 2: table ---- */
+      function drawTable(t) {
+        if (t < 3) return;
+        var a = 1 - seg(t, 6.0, 6.6);
+        if (a <= 0) return;
+        ctx.save();
+        ctx.globalAlpha *= a;
+        var tb = tableGeom();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = GRID;
+
+        var r;
+        for (r = 0; r <= 6; r++) {
+          var lp = seg(t, 3.0 + r * 0.12, 3.25 + r * 0.12);
+          if (lp <= 0) continue;
+          var y = tb.y + tb.rowH * r;
+          ctx.beginPath();
+          ctx.moveTo(tb.x, y);
+          ctx.lineTo(tb.x + tb.w * easeOutCubic(lp), y);
+          ctx.stroke();
+        }
+        var vx = [tb.x, tb.x + tb.c1, tb.x + tb.c1 + tb.c2, tb.x + tb.w];
+        for (var v = 0; v < 4; v++) {
+          var vp = seg(t, 3.4 + v * 0.12, 3.75 + v * 0.12);
+          if (vp <= 0) continue;
+          ctx.beginPath();
+          ctx.moveTo(vx[v], tb.y);
+          ctx.lineTo(vx[v], tb.y + tb.h * easeOutCubic(vp));
+          ctx.stroke();
+        }
+
+        var ha = seg(t, 3.9, 4.2);
+        if (ha > 0) {
+          ctx.save();
+          ctx.globalAlpha *= ha;
+          ctx.fillStyle = WHITE;
+          ctx.font = fontDisplay(12, 600);
+          ctx.textBaseline = "middle";
+          ctx.textAlign = "left";
+          var hy = tb.y + tb.rowH * 0.5;
+          ctx.fillText("Keyword", tb.x + 14, hy);
+          ctx.fillText("Volumen", tb.x + tb.c1 + 14, hy);
+          ctx.fillText("Intención", tb.x + tb.c1 + tb.c2 + 14, hy);
+          ctx.restore();
+        }
+
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "left";
+        for (var i = 0; i < 5; i++) {
+          var land = flightStart(i) + FLIGHT_DUR;
+          if (t < land) continue;
+          var rowY = tb.y + tb.rowH * (i + 1);
+          var fl = seg(t, land, land + 0.35);
+          if (fl < 1) {
+            ctx.save();
+            ctx.globalAlpha *= 0.5 * (1 - fl);
+            ctx.fillStyle = ACCENT;
+            ctx.fillRect(tb.x + 1, rowY + 1, tb.c1 - 2, tb.rowH - 2);
+            ctx.restore();
+          }
+          ctx.fillStyle = TEXT;
+          ctx.font = fontUI(12);
+          ctx.fillText(KWS[i], tb.x + 14, rowY + tb.rowH / 2);
+          var va = seg(t, land + 0.2, land + 0.45);
+          if (va > 0) {
+            ctx.save();
+            ctx.globalAlpha *= va;
+            ctx.fillStyle = "rgba(255,255,255,0.5)";
+            ctx.fillText(VOLS[i], tb.x + tb.c1 + 14, rowY + tb.rowH / 2);
+            ctx.fillText(INTS[i], tb.x + tb.c1 + tb.c2 + 14, rowY + tb.rowH / 2);
+            ctx.restore();
+          }
+        }
+        ctx.restore();
+      }
+
+      /* ---- PHASE 3: clusters ---- */
+      var CLUSTERS = ["Reformas", "Presupuesto", "Diseño"];
+      function clusterPos(i, t) {
+        var tb = tableGeom();
+        var src = { x: tb.x + tb.w / 2, y: tb.y + tb.h / 2 };
+        var targets = [
+          { x: W * 0.63, y: H * 0.32 },
+          { x: W * 0.83, y: H * 0.42 },
+          { x: W * 0.68, y: H * 0.58 }
+        ];
+        var p = easeOutCubic(seg(t, 6.2, 6.9));
+        return {
+          x: lerp(src.x, targets[i].x, p) + Math.sin(t * 1.6 + i * 2.1) * 3,
+          y: lerp(src.y, targets[i].y, p) + Math.cos(t * 1.3 + i * 1.7) * 3
+        };
+      }
+      function drawClusters(t) {
+        if (t < 6.2) return;
+        var a = seg(t, 6.2, 6.6) * (1 - seg(t, 8.0, 8.4));
+        if (a <= 0) return;
+        ctx.save();
+        ctx.globalAlpha *= a;
+        var pts = [clusterPos(0, t), clusterPos(1, t), clusterPos(2, t)];
+        var rad = Math.max(30, W * 0.033);
+
+        ctx.strokeStyle = ACCENT;
+        ctx.lineWidth = 1.2;
+        ctx.setLineDash([4, 6]);
+        ctx.lineDashOffset = -t * 30;
+        var pairs = [[0, 1], [1, 2], [2, 0]];
+        pairs.forEach(function (pr) {
+          ctx.beginPath();
+          ctx.moveTo(pts[pr[0]].x, pts[pr[0]].y);
+          ctx.lineTo(pts[pr[1]].x, pts[pr[1]].y);
+          ctx.stroke();
+        });
+        ctx.setLineDash([]);
+
+        pts.forEach(function (p, i) {
+          ctx.fillStyle = "rgba(0,71,255,0.10)";
+          ctx.strokeStyle = ACCENT;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath(); ctx.arc(p.x, p.y, rad, 0, Math.PI * 2);
+          ctx.fill(); ctx.stroke();
+          ctx.fillStyle = "rgba(255,255,255,0.85)";
+          ctx.font = fontDisplay(12, 500);
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(CLUSTERS[i], p.x, p.y);
+        });
+        ctx.restore();
+      }
+
+      /* ---- PHASE 4: site tree ---- */
+      function drawNodeRect(label, cx, cy) {
+        ctx.font = fontDisplay(11, 500);
+        var w = ctx.measureText(label).width + 18;
+        var h = 24;
+        rr(cx - w / 2, cy - h / 2, w, h, 4);
+        ctx.fillStyle = "rgba(0,71,255,0.10)";
+        ctx.fill();
+        ctx.strokeStyle = ACCENT;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+        ctx.fillStyle = "rgba(255,255,255,0.85)";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(label, cx, cy);
+      }
+      function drawTree(t) {
+        if (t < 8.2) return;
+        var out = seg(t, 10.0, 10.5);
+        var a = seg(t, 8.2, 8.5) * (1 - out);
+        if (a <= 0) return;
+        ctx.save();
+        ctx.globalAlpha *= a;
+
+        var C = { x: W * 0.75, y: H * 0.47 };
+        var cp = easeInQuad(out);
+        function P(x, y) { return { x: lerp(x, C.x, cp), y: lerp(y, C.y, cp) }; }
+
+        var root = P(W * 0.72, H * 0.16);
+        var midXs = [W * 0.60, W * 0.72, W * 0.84];
+        var mids = midXs.map(function (mx) { return P(mx, H * 0.34); });
+        var midLabels = ["Servicios", "Proyectos", "Contacto"];
+        var leaves = midXs.map(function (mx) {
+          return [P(mx - W * 0.038, H * 0.52), P(mx + W * 0.038, H * 0.52)];
+        });
+
+        ctx.strokeStyle = ACCENT;
+        ctx.lineWidth = 1.2;
+        function edge(from, to, t0) {
+          var ep = easeOutCubic(seg(t, t0, t0 + 0.3));
+          if (ep <= 0) return 0;
+          ctx.beginPath();
+          ctx.moveTo(from.x, from.y + 12);
+          ctx.lineTo(lerp(from.x, to.x, ep), lerp(from.y + 12, to.y - 12, ep));
+          ctx.stroke();
+          return ep;
+        }
+
+        var rootA = seg(t, 8.2, 8.45);
+        if (rootA > 0) {
+          ctx.save(); ctx.globalAlpha *= rootA;
+          drawNodeRect("Inicio", root.x, root.y);
+          ctx.restore();
+        }
+        for (var i = 0; i < 3; i++) {
+          var done = edge(root, mids[i], 8.4 + i * 0.15);
+          if (done >= 1) {
+            var ma = seg(t, 8.7 + i * 0.15, 8.9 + i * 0.15);
+            if (ma > 0) {
+              ctx.save(); ctx.globalAlpha *= ma;
+              drawNodeRect(midLabels[i], mids[i].x, mids[i].y);
+              ctx.restore();
+            }
+            for (var l = 0; l < 2; l++) {
+              var lt0 = 9.0 + (i * 2 + l) * 0.08;
+              var lp = easeOutCubic(seg(t, lt0, lt0 + 0.25));
+              if (lp > 0) {
+                var lf = leaves[i][l];
+                ctx.beginPath();
+                ctx.moveTo(mids[i].x, mids[i].y + 12);
+                ctx.lineTo(lerp(mids[i].x, lf.x, lp), lerp(mids[i].y + 12, lf.y - 9, lp));
+                ctx.stroke();
+                if (lp >= 1) {
+                  var la = seg(t, lt0 + 0.25, lt0 + 0.45);
+                  if (la > 0) {
+                    ctx.save(); ctx.globalAlpha *= la;
+                    rr(lf.x - 16, lf.y - 9, 32, 18, 3);
+                    ctx.fillStyle = "rgba(0,71,255,0.08)";
+                    ctx.fill();
+                    ctx.strokeStyle = ACCENT;
+                    ctx.stroke();
+                    ctx.restore();
+                  }
+                }
+              }
+            }
+          }
+        }
+        ctx.restore();
+      }
+
+      /* ---- PHASE 5: wireframe page ---- */
+      function drawWireframe(t) {
+        if (t < 10.6) return;
+        var wf = { x: W * 0.58, y: H * 0.22, w: W * 0.34, h: H * 0.50 };
+        var colW = (wf.w - 24) / 3;
+        var blocks = [
+          { x: 0, y: 0, w: wf.w, h: wf.h * 0.10, label: "Inicio · Reformas · Presupuesto · Diseño · Contacto", size: 11, color: "rgba(255,255,255,0.6)" },
+          { x: 0, y: wf.h * 0.13, w: wf.w, h: wf.h * 0.30, label: "Tu Negocio Online", size: 12, color: WHITE },
+          { x: 0, y: wf.h * 0.47, w: colW, h: wf.h * 0.26, label: "Reformas", size: 14, color: "#ffffff" },
+          { x: colW + 12, y: wf.h * 0.47, w: colW, h: wf.h * 0.26, label: "Presupuesto", size: 14, color: "#ffffff" },
+          { x: (colW + 12) * 2, y: wf.h * 0.47, w: colW, h: wf.h * 0.26, label: "Diseño", size: 14, color: "#ffffff" },
+          { x: 0, y: wf.h * 0.79, w: wf.w, h: wf.h * 0.10, label: "Contacto", size: 11, color: WHITE }
+        ];
+        ctx.save();
+        blocks.forEach(function (b, i) {
+          var t0 = 10.6 + i * 0.3;
+          var bp = seg(t, t0, t0 + 0.35);
+          if (bp <= 0) return;
+          var e = easeOutCubic(bp);
+          ctx.save();
+          ctx.globalAlpha *= e;
+          var by = wf.y + b.y + (1 - e) * 10;
+          rr(wf.x + b.x, by, b.w, b.h, 6);
+          ctx.fillStyle = "rgba(0,71,255,0.05)";
+          ctx.fill();
+          ctx.strokeStyle = ACCENT;
+          ctx.lineWidth = 1.2;
+          ctx.stroke();
+          ctx.fillStyle = b.color;
+          ctx.font = fontUI(b.size);
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          var maxW = b.w - 16;
+          var label = b.label;
+          if (ctx.measureText(label).width > maxW && i === 0) {
+            label = "Inicio · Reformas · Contacto";
+          }
+          ctx.fillText(label, wf.x + b.x + b.w / 2, by + b.h / 2, maxW);
+          ctx.restore();
+        });
+        ctx.restore();
+      }
+
+      /* ---- PHASE 6: GA4-style results chart ---- */
+      function chartY(ch, px) {
+        return ch.y0 - Math.pow(px, 1.8) * ch.h * 0.92 - Math.sin(px * 9) * ch.h * 0.03;
+      }
+      function drawChart(t) {
+        if (t < 13) return;
+        var ch = { x: W * 0.63, y0: H * 0.93, w: W * 0.27, h: H * 0.15 };
+        var padL = 34, padR = 14, padT = 30, padB = 22;
+        ctx.save();
+
+        var bgA = seg(t, 13.0, 13.3);
+        if (bgA > 0) {
+          ctx.save();
+          ctx.globalAlpha *= bgA;
+          ctx.fillStyle = "rgba(0,0,0,0.4)";
+          rr(ch.x - padL, ch.y0 - ch.h - padT, ch.w + padL + padR, ch.h + padT + padB, 4);
+          ctx.fill();
+          ctx.restore();
+        }
+
+        var axA = seg(t, 13.1, 13.4);
+        if (axA > 0) {
+          ctx.save();
+          ctx.globalAlpha *= axA;
+          ctx.strokeStyle = "rgba(255,255,255,0.3)";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(ch.x, ch.y0 - ch.h);
+          ctx.lineTo(ch.x, ch.y0);
+          ctx.lineTo(ch.x + ch.w, ch.y0);
+          ctx.stroke();
+
+          ctx.fillStyle = "rgba(255,255,255,0.5)";
+          ctx.font = fontUI(10);
+          ctx.textAlign = "right";
+          ctx.textBaseline = "middle";
+          var yLabels = ["0", "500", "1K", "2K"];
+          for (var yl = 0; yl < 4; yl++) {
+            ctx.fillText(yLabels[yl], ch.x - 6, ch.y0 - (ch.h * yl) / 3);
+          }
+          ctx.textAlign = "center";
+          ctx.textBaseline = "top";
+          var xLabels = ["Ene", "Mar", "May", "Jul"];
+          for (var xl = 0; xl < 4; xl++) {
+            ctx.fillText(xLabels[xl], ch.x + ch.w * (0.08 + xl * 0.28), ch.y0 + 6);
+          }
+          ctx.restore();
+        }
+
+        var cp = easeOutCubic(seg(t, 13.3, 14.3));
+        if (cp > 0) {
+          var steps = Math.max(2, Math.floor(60 * cp));
+          var endPx = steps / 60;
+
+          var grad = ctx.createLinearGradient(0, ch.y0 - ch.h, 0, ch.y0);
+          grad.addColorStop(0, "rgba(0,71,255,0.4)");
+          grad.addColorStop(1, "rgba(0,71,255,0)");
+          ctx.beginPath();
+          ctx.moveTo(ch.x, ch.y0);
+          for (var f = 0; f <= steps; f++) {
+            var fpx = f / 60;
+            ctx.lineTo(ch.x + fpx * ch.w, chartY(ch, fpx));
+          }
+          ctx.lineTo(ch.x + endPx * ch.w, ch.y0);
+          ctx.closePath();
+          ctx.fillStyle = grad;
+          ctx.fill();
+
+          ctx.strokeStyle = ACCENT;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          for (var s = 0; s <= steps; s++) {
+            var px = s / 60;
+            var x = ch.x + px * ch.w;
+            var y = chartY(ch, px);
+            if (s === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+
+          var dots = [0.1, 0.3, 0.5, 0.7, 0.9];
+          ctx.fillStyle = ACCENT;
+          dots.forEach(function (dpx, di) {
+            if (dpx > endPx) return;
+            var pulse = 1 + 0.35 * Math.sin(t * 4 + di * 1.3);
+            ctx.beginPath();
+            ctx.arc(ch.x + dpx * ch.w, chartY(ch, dpx), 3 * pulse, 0, Math.PI * 2);
+            ctx.fill();
+          });
+        }
+
+        var ga = seg(t, 14.0, 14.4);
+        if (ga > 0) {
+          ctx.save();
+          ctx.globalAlpha *= ga;
+          var gx = ch.x + ch.w * 0.5, gy = ch.y0 - ch.h - padT - 16;
+          ctx.fillStyle = WHITE;
+          ctx.beginPath(); ctx.arc(gx, gy, 12, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = ACCENT;
+          ctx.font = fontDisplay(14, 700);
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText("G", gx, gy + 1);
+          ctx.restore();
+        }
+
+        var la = seg(t, 14.3, 14.8);
+        if (la > 0) {
+          ctx.save();
+          ctx.globalAlpha *= la;
+          ctx.fillStyle = ACCENT;
+          ctx.font = fontDisplay(14, 600);
+          ctx.textAlign = "right";
+          ctx.textBaseline = "bottom";
+          ctx.fillText("↑ +340% visibilidad", ch.x + ch.w, ch.y0 - ch.h - 8);
+          ctx.restore();
+        }
+        ctx.restore();
+      }
+
+      /* ---- steps indicator sync ---- */
+      var curStep = -1;
+      function updateStep(n) {
+        if (n === curStep) return;
+        curStep = n;
+        document.querySelectorAll(".hero-step").forEach(function (el) {
+          el.classList.remove("active");
+        });
+        var active = document.querySelector("[data-step='" + n + "']");
+        if (active) active.classList.add("active");
+      }
+
+      /* ---- main loop ---- */
+      function draw(t) {
+        updateStep(t < 6 ? 0 : t < 10 ? 1 : t < 13 ? 2 : 3);
+        ctx.clearRect(0, 0, W, H);
+        ctx.globalAlpha = t > 15 ? 1 - seg(t, 15, 16) : 1;
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "left";
+        drawSearch(t);
+        drawTable(t);
+        drawFlights(t);
+        drawClusters(t);
+        drawTree(t);
+        drawWireframe(t);
+        drawChart(t);
+        ctx.globalAlpha = 1;
+      }
+
+      var start = performance.now();
+      var hiddenAt = 0;
+      var rafId = null;
+      function frame(now) {
+        if (canvas.clientWidth > 0) {
+          if (W !== canvas.clientWidth || H !== canvas.clientHeight) resize();
+          draw(((now - start) / 1000) % LOOP);
+        }
+        rafId = requestAnimationFrame(frame);
+      }
+      rafId = requestAnimationFrame(frame);
+
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+          hiddenAt = performance.now();
+          if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+        } else {
+          start += performance.now() - hiddenAt;
+          if (!rafId) rafId = requestAnimationFrame(frame);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
