@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Andrei Trusau — Desarrollo web y SEO en Salamanca</title>
-  <meta name="description" content="Diseño y desarrollo web + SEO para negocios que quieren crecer en Google. Andrei Trusau, desarrollador web freelance en Salamanca, España.">
-  <meta property="og:title" content="Andrei Trusau — Desarrollo web y SEO">
-  <meta property="og:description" content="Sitios web que se encuentran. Diseño, desarrollo y posicionamiento en Google para negocios y agencias en España.">
+  <title>Andrei &amp; Ekaterina — Desarrollo web y SEO en Salamanca</title>
+  <meta name="description" content="Diseño y desarrollo web + SEO para negocios que quieren crecer en Google. Somos un equipo de desarrollo web, SEO y coordinación de proyectos con base en Salamanca, España.">
+  <meta name="author" content="Andrei Trusau &amp; Ekaterina Novitskaia">
+  <meta property="og:title" content="Andrei &amp; Ekaterina — Desarrollo web y SEO">
+  <meta property="og:description" content="Sitios web que se encuentran. Diseñamos, desarrollamos y posicionamos sitios web para negocios y agencias en España.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="og-image.png">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -581,14 +582,22 @@
       font-size: 14px;
       font-weight: 300;
     }
-
-    /* ---------- Sobre mí ---------- */
+    /* ---------- Sobre nosotros ---------- */
+    .team-profiles {
+      display: grid;
+      gap: 96px;
+    }
     .about-grid {
       display: grid;
       grid-template-columns: 5fr 7fr;
       gap: 64px;
       align-items: center;
     }
+    .about-grid.is-reversed {
+      grid-template-columns: 7fr 5fr;
+    }
+    .about-grid.is-reversed .about-text { order: 1; }
+    .about-grid.is-reversed .about-photo { order: 2; }
     .about-photo {
       aspect-ratio: 3 / 4;
       border-radius: 0;
@@ -620,6 +629,19 @@
       color: var(--text);
       margin-bottom: 28px;
     }
+    .profile-name {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.2vw, 42px);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .profile-role {
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      margin-bottom: 28px;
+    }
     .skills-table {
       margin-bottom: 28px;
     }
@@ -648,6 +670,16 @@
       font-size: 14px;
       color: var(--text-dim);
     }
+    .team-note {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 26px 32px;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      text-align: center;
+      font-size: 15px;
+    }
+    .team-note strong { color: var(--text); font-weight: 500; }
 
     /* ---------- Contacto ---------- */
     .contact { text-align: center; }
@@ -820,7 +852,12 @@
       .projects-grid,
       .process-grid { grid-template-columns: 1fr; }
       .about-grid { grid-template-columns: 1fr; gap: 40px; }
-      .about-photo { max-width: 340px; }
+      .about-grid.is-reversed { grid-template-columns: 1fr; }
+      .about-grid.is-reversed .about-photo { order: 1; }
+      .about-grid.is-reversed .about-text { order: 2; }
+      .about-photo { max-width: 340px; width: 100%; }
+      .team-profiles { gap: 72px; }
+      .skills-table > div { grid-template-columns: 120px 1fr; }
       .hero-sub { font-size: 16px; }
       .hero-foot-inner { padding: 16px 20px 0; }
       .contact-card { padding: 26px 32px; min-width: 0; width: 100%; }
@@ -869,7 +906,7 @@
       <ul class="nav-links" id="nav-menu" data-nav-links>
         <li><a href="#servicios">Servicios</a></li>
         <li><a href="#proyectos">Proyectos</a></li>
-        <li><a href="#sobre-mi">Sobre mí</a></li>
+        <li><a href="#sobre-nosotros">Sobre nosotros</a></li>
         <li><a href="#contacto">Contacto</a></li>
       </ul>
     </div>
@@ -918,12 +955,12 @@
     <section id="servicios">
       <div class="container">
         <p class="section-label reveal">01 — Servicios</p>
-        <h2 class="section-title reveal">Lo que hago</h2>
+        <h2 class="section-title reveal">Lo que hacemos</h2>
         <div class="services-grid">
           <article class="service-card reveal">
             <span class="service-icon" aria-hidden="true">01</span>
             <h3>Auditoría y estrategia</h3>
-            <p>Antes de diseñar, analizo tu negocio, tus competidores y lo que buscan tus clientes. La estructura se define con datos, no con plantillas.</p>
+            <p>Antes de diseñar, analizamos tu negocio, tus competidores y lo que buscan tus clientes. La estructura se define con datos, no con plantillas.</p>
           </article>
           <article class="service-card reveal" style="transition-delay:.1s">
             <span class="service-icon" aria-hidden="true">02</span>
@@ -936,7 +973,7 @@
             <p>Auditorías técnicas, investigación de palabras clave, estructura de contenidos y seguimiento de resultados. Visibilidad real en Google.</p>
           </article>
         </div>
-        <p class="services-note reveal"><a href="https://trusman9017.github.io/Trusau-portfolio" target="_blank" style="color:inherit; text-decoration:none;">También ofrezco servicios de <span style="color:#0047FF">estrategia de marca y contenidos</span>. Ver portfolio completo →</a></p>
+        <p class="services-note reveal"><a href="https://trusman9017.github.io/Trusau-portfolio" target="_blank" style="color:inherit; text-decoration:none;">También ofrecemos servicios de <span style="color:#0047FF">estrategia de marca y contenidos</span>. Ver portfolio completo →</a></p>
       </div>
     </section>
 
@@ -944,7 +981,7 @@
     <section id="proyectos">
       <div class="container">
         <p class="section-label reveal">02 — Proyectos</p>
-        <h2 class="section-title reveal">Trabajo reciente</h2>
+        <h2 class="section-title reveal">Nuestro trabajo reciente</h2>
         <div class="filter-tabs reveal" role="tablist" aria-label="Filtrar proyectos">
           <button class="filter-tab is-active" type="button" data-filter="todo">Todo</button>
           <button class="filter-tab" type="button" data-filter="web">Web</button>
@@ -1015,17 +1052,17 @@
     <section id="proceso">
       <div class="container">
         <p class="section-label reveal">03 — Proceso</p>
-        <h2 class="section-title reveal">Cómo trabajo</h2>
+        <h2 class="section-title reveal">Cómo trabajamos</h2>
         <div class="process-grid">
           <article class="process-step reveal">
             <span class="process-num">01</span>
             <h3>Análisis</h3>
-            <p>Entiendo tu negocio, tus competidores y tus objetivos antes de escribir una línea de código.</p>
+            <p>Entendemos tu negocio, tus competidores y tus objetivos antes de escribir una línea de código.</p>
           </article>
           <article class="process-step reveal" style="transition-delay:.1s">
             <span class="process-num">02</span>
             <h3>Diseño</h3>
-            <p>Propongo una solución visual clara. Sin templates genéricos.</p>
+            <p>Proponemos una solución visual clara. Sin templates genéricos.</p>
           </article>
           <article class="process-step reveal" style="transition-delay:.2s">
             <span class="process-num">03</span>
@@ -1041,23 +1078,44 @@
       </div>
     </section>
 
-    <!-- SOBRE MÍ -->
-    <section id="sobre-mi">
+    <!-- SOBRE NOSOTROS -->
+    <section id="sobre-nosotros">
       <div class="container">
-        <p class="section-label reveal">04 — Sobre mí</p>
-        <div class="about-grid">
-          <div class="about-photo reveal">
-            <img src="assets/andrei-trusau.webp" alt="Andrei Trusau" loading="lazy" decoding="async">
-          </div>
-          <div class="about-text reveal" style="transition-delay:.15s">
-            <p>Soy Andrei Trusau, diseñador y desarrollador web freelance con base en Salamanca. Trabajo con negocios locales y agencias en España para crear sitios web que no solo se ven bien — sino que aparecen en Google y convierten visitas en clientes. Combino desarrollo front-end, WordPress y estrategia SEO en un solo perfil.</p>
-            <dl class="skills-table">
-              <div><dt>Desarrollo</dt><dd>HTML / CSS / JavaScript / WordPress / Elementor</dd></div>
-              <div><dt>SEO</dt><dd>Técnico / On-page / Semántica / Search Console</dd></div>
-              <div><dt>Herramientas</dt><dd>GA4 / Figma</dd></div>
-              <div><dt>Ubicación</dt><dd>Salamanca / Trabajo remoto</dd></div>
-            </dl>
-          </div>
+        <p class="section-label reveal">04 — Sobre nosotros</p>
+        <div class="team-profiles">
+          <article class="about-grid">
+            <div class="about-photo reveal">
+              <img src="assets/andrei-trusau.webp" alt="Retrato de Andrei Trusau" loading="lazy" decoding="async">
+            </div>
+            <div class="about-text reveal" style="transition-delay:.15s">
+              <h2 class="profile-name">Andrei Trusau</h2>
+              <p class="profile-role">SEO &amp; Desarrollo web</p>
+              <p>Soy Andrei Trusau, especialista en SEO y desarrollo web con base en Salamanca. Analizo cómo buscan los clientes los servicios de un negocio y convierto esa información en una estructura web clara: páginas de servicios, contenido, arquitectura, SEO técnico y desarrollo. Trabajo con WordPress y también desarrollo soluciones web directamente cuando el proyecto lo requiere.</p>
+              <dl class="skills-table">
+                <div><dt>Desarrollo</dt><dd>HTML / CSS / JavaScript / WordPress / Elementor</dd></div>
+                <div><dt>SEO</dt><dd>Técnico / On-page / Semántica / Local SEO / Search Console</dd></div>
+                <div><dt>Herramientas</dt><dd>Screaming Frog / DataForSEO / PageSpeed / Lighthouse</dd></div>
+                <div><dt>Ubicación</dt><dd>Salamanca / Trabajo remoto</dd></div>
+              </dl>
+            </div>
+          </article>
+          <article class="about-grid is-reversed">
+            <div class="about-text reveal">
+              <h2 class="profile-name">Ekaterina Novitskaia</h2>
+              <p class="profile-role">Comunicación con clientes &amp; Coordinación de proyectos</p>
+              <p>Soy Ekaterina Novitskaia. Me encargo de la comunicación con clientes y de la coordinación de los proyectos: recopilo objetivos y materiales, organizo las decisiones, mantengo el seguimiento y ayudo a convertir las necesidades del negocio en un briefing claro. Mi experiencia en estrategia de marca y sistemas de contenido también nos ayuda a mantener una comunicación coherente y una presentación clara del negocio.</p>
+              <dl class="skills-table">
+                <div><dt>Comunicación</dt><dd>Clientes / Briefing / Seguimiento / Aprobaciones</dd></div>
+                <div><dt>Coordinación</dt><dd>Materiales / Organización / Entregables / Seguimiento del proyecto</dd></div>
+                <div><dt>Estrategia</dt><dd>Marca / Contenido / Posicionamiento / Comunicación</dd></div>
+                <div><dt>Idiomas</dt><dd>Ruso / Inglés / Español / Italiano / Bielorruso</dd></div>
+              </dl>
+            </div>
+            <div class="about-photo reveal" style="transition-delay:.15s">
+              <img src="assets/ekaterina-novitskaia.jpeg" alt="Retrato de Ekaterina Novitskaia" loading="lazy" decoding="async">
+            </div>
+          </article>
+          <p class="team-note reveal"><strong>Ekaterina</strong> coordina la comunicación y el proyecto. <strong>Andrei</strong> se encarga del análisis, SEO y la implementación técnica.</p>
         </div>
       </div>
     </section>
@@ -1067,23 +1125,18 @@
       <div class="container">
         <p class="section-label reveal">05 — Contacto</p>
         <h2 class="section-title reveal">¿Hablamos?</h2>
-        <p class="contact-sub reveal">Cuéntame tu proyecto. Respondo en menos de 24h.</p>
+        <p class="contact-sub reveal">Cuéntanos tu proyecto. Respondemos en menos de 24h.</p>
         <div class="contact-options">
           <button class="contact-card reveal" type="button" data-copy="trusauweb@gmail.com" aria-label="Copiar email trusauweb@gmail.com">
             <span class="copy-tip" aria-hidden="true">Copiado ✓</span>
             <span class="label">Email</span>
             <span class="value">trusauweb@gmail.com</span>
           </button>
-          <a class="contact-card reveal" style="transition-delay:.1s" href="#" target="_blank" rel="noopener">
+          <a class="contact-card reveal" style="transition-delay:.1s" href="https://wa.me/34657501973" target="_blank" rel="noopener">
             <span class="label">WhatsApp</span>
-            <span class="value">Abrir chat</span>
-          </a>
-          <a class="contact-card reveal" style="transition-delay:.2s" href="https://t.me/Andrei7169" target="_blank" rel="noopener">
-            <span class="label">Telegram</span>
-            <span class="value">@Andrei7169</span>
+            <span class="value">+34 657 501 973</span>
           </a>
         </div>
-        <p class="contact-more reveal">O encuentra mi trabajo completo en → <a href="https://trusman9017.github.io/Trusau-portfolio" target="_blank" rel="noopener">GitHub</a></p>
       </div>
     </section>
 
@@ -1096,15 +1149,13 @@
         <a class="footer-mail reveal" href="mailto:trusauweb@gmail.com">trusauweb@gmail.com</a>
       </div>
       <div class="footer-row">
-        <p>© 2026 Andrei Trusau</p>
+        <p>© 2026 Andrei Trusau &amp; Ekaterina Novitskaia</p>
         <ul class="footer-links">
-          <li><a href="https://github.com/Trusman9017" target="_blank" rel="noopener">GitHub</a></li>
-          <li><a href="#" aria-label="LinkedIn (próximamente)">LinkedIn</a></li>
-          <li><a href="https://t.me/Andrei7169" target="_blank" rel="noopener">Telegram</a></li>
+          <li><a href="https://wa.me/34657501973" target="_blank" rel="noopener">WhatsApp</a></li>
         </ul>
       </div>
       <p class="footer-path" aria-hidden="true"><span class="fp-accent">/</span>tru<span class="fp-accent">/</span>sau<span class="fp-accent">/</span>web</p>
-      <p class="footer-fine">Diseñado y desarrollado por Andrei Trusau · Salamanca, España</p>
+      <p class="footer-fine">Un proyecto de Andrei Trusau &amp; Ekaterina Novitskaia · Salamanca, España</p>
     </div>
   </footer>
 
